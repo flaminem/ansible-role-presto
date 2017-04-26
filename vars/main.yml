@@ -1,0 +1,4 @@
+---
+presto_node_id: "{{presto_cluster_name}}-{{ ansible_fqdn }}"
+
+

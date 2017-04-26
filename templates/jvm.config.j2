@@ -1,0 +1,12 @@
+-server
+-Xmx{% if presto_install_worker %}
+{{presto_worker_max_heap_size}}
+{% else %}
+{{presto_coordinator_max_heap_size}}
+{% endif %}
+-XX:+UseG1GC
+-XX:G1HeapRegionSize=32M
+-XX:+UseGCOverheadLimit
+-XX:+ExplicitGCInvokesConcurrent
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:+ExitOnOutOfMemoryError

@@ -1,0 +1,23 @@
+---
+- name: download packaged presto 
+  get_url: url={{presto_package_mirror}}/presto-cli/{{presto_version}}/presto-cli-0.171-executable.jar
+           dest={{presto_install_dir}}/presto-cli.jar
+           mode=0777
+           owner={{presto_user}}
+           group={{presto_user}}
+  environment: "{{ presto_environment }}"
+  tags: ["packages"]
+
+- name: install presto command
+  template: src=presto-cli.sh.j2 
+            dest={{presto_install_dir}}/presto-cli
+            mode=0777
+            owner={{presto_user}}
+            group={{presto_user}}
+  tags: ["configuration"]
+
+- name: configure presto env for users
+  template: src=presto.sh.j2 dest=/etc/profile.d/presto.sh
+  tags: [presto]
+
+

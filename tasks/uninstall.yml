@@ -1,0 +1,4 @@
+---
+- name: Ensure presto is uninstalled
+  file: path=/opt/presto-v{{presto_version}} state=absent
+

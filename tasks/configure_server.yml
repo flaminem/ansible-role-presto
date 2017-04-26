@@ -1,0 +1,23 @@
+---
+- name: configure presto
+  template: src={{item}}.j2 dest={{presto_install_dir}}/etc/{{item}} owner={{presto_user}} group={{presto_user}}
+  with_items:
+     - config.properties
+     - jvm.config
+     - log.properties
+     - node.properties
+     - catalog/hive.properties
+  tags: [configuration, presto]
+
+- name: add init.d conf for default presto version when Ubuntu 14.04 
+  when: presto_set_as_default and ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '14'
+  template: src=init.d.presto.j2 dest=/etc/init.d/presto owner=root group=root mode=0755
+
+
+- name: start presto service when default presto version
+  when: presto_set_as_default
+  service:
+    name: presto
+    state: started
+
+

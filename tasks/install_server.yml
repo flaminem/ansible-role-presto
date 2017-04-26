@@ -1,0 +1,24 @@
+---
+- name: download packaged presto 
+  get_url: url={{presto_package_mirror}}/presto-server/{{presto_version}}/presto-server-{{presto_version}}.tar.gz
+           dest=/tmp/presto-server-{{presto_version}}.tar.gz
+  environment: "{{ presto_environment }}"
+
+- name: extract from archive to tmp
+  unarchive: src=/tmp/presto-server-{{presto_version}}.tar.gz 
+             dest=/tmp
+             copy=no
+             creates="/opt/presto-v{{presto_version}}"
+
+- name: Move extracted archive to install directory
+  command: creates="/opt/presto-v{{presto_version}}" mv /tmp/presto-server-{{presto_version}} /opt/presto-v{{presto_version}}
+
+- name: ensure presto install directory has correct owner and rights 
+  file: path={{presto_install_dir}}
+        state=directory 
+        mode=0755
+        owner={{presto_user}}
+        group={{presto_user}}
+        recurse=yes
+
+

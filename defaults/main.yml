@@ -1,0 +1,31 @@
+---
+presto_version: "0.171" 
+presto_install_dir: "/opt/presto-v{{presto_version}}"
+presto_link_dir: "/opt/presto"
+presto_environment: {}
+presto_user: "presto"
+presto_group: "{{presto_user}}"
+presto_set_as_default: yes
+presto_hive_site_path: "/etc/hive/conf/hive-site.xml"
+presto_hbase_site_path: "/etc/hbase/conf/hbase-site.xml"
+presto_yarn_site_path: "/etc/hadoop/conf/yarn-site.xml"
+presto_hdfs_site_path: "/etc/hadoop/conf/hdfs-site.xml"
+presto_core_site_path: "/etc/hadoop/conf/core-site.xml"
+
+presto_package_mirror: "https://repo1.maven.org/maven2/com/facebook/presto"
+
+presto_uninstall: false
+presto_install_coordinator: false
+presto_install_worker: false
+presto_install_cli: false
+
+presto_data_dir: /var/presto/data
+
+presto_query_max_memory: 100GB
+presto_query_max_memory_per_node: 10GB
+presto_worker_max_heap_size: 20G
+presto_coordinator_max_heap_size: 20G
+presto_http_port: 8080
+
+presto_cluster_name: prod
+

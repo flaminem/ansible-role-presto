@@ -1,0 +1,29 @@
+---
+- name: ensure presto install directory exists with correct owner and rights 
+  file: path={{presto_install_dir}}
+        state=directory 
+        mode=0755
+        owner={{presto_user}}
+        group={{presto_user}}
+        recurse=yes
+
+- name: ensure presto etc/catalog directory exists with correct owner and rights 
+  file: path={{presto_install_dir}}/etc/catalog
+        state=directory 
+        mode=0755
+        owner={{presto_user}}
+        group={{presto_user}}
+        recurse=yes
+
+- name: ensure presto data directory exists with correct owner and rights 
+  file: path={{presto_data_dir}}
+        state=directory 
+        mode=0755
+        owner={{presto_user}}
+        group={{presto_user}}
+        recurse=yes
+
+- name: add symlink for default presto version
+  when: presto_set_as_default
+  file: state=link src={{presto_install_dir}} dest={{presto_link_dir}}
+

@@ -1,0 +1,7 @@
+---
+- name: ensure presto group exist
+  group: name={{presto_group}}
+
+- name: ensure presto user exist
+  user: name={{presto_user}} group={{presto_group}}
+
