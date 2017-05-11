@@ -7,8 +7,12 @@
   when: not presto_uninstall and (presto_install_coordinator or presto_install_worker or presto_install_cli)
   tags: [presto]
 
-- include: install_server.yml
-  when: not presto_uninstall and (presto_install_coordinator or presto_install_worker)
+- include: install_server_facebook.yml
+  when: not presto_uninstall and (presto_install_coordinator or presto_install_worker) and presto_distrib == "facebook"
+  tags: [presto]
+
+- include: install_server_teradata.yml
+  when: not presto_uninstall and (presto_install_coordinator or presto_install_worker) and presto_distrib == "teradata"
   tags: [presto]
 
 - include: configure_common.yml
@@ -19,6 +23,7 @@
   when: not presto_uninstall and (presto_install_coordinator or presto_install_worker)
   tags: [presto]
   
-- include: install_cli.yml
-  when: not presto_uninstall and (presto_install_cli)
+- include: install_cli_teradata.yml
+  when: not presto_uninstall and (presto_install_cli) and presto_distrib == "teradata"
   tags: [presto]
+

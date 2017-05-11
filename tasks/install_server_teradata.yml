@@ -1,0 +1,51 @@
+---
+- name: download packaged presto 
+  get_url: url=http://teradata-presto.s3.amazonaws.com/release-packages/{{presto_version}}/presto_server_pkg.{{presto_version}}.tar.gz
+           dest=/tmp/presto-server-{{presto_version}}.tar.gz
+  environment: "{{ presto_environment }}"
+
+- name: extract from archive to tmp
+  unarchive: src=/tmp/presto-server-{{presto_version}}.tar.gz 
+             dest=/tmp
+             copy=no
+             creates=/tmp/presto_server_pkg.{{presto_version}}
+             owner={{presto_user}}
+             group={{presto_user}}
+
+- name: ensure rpm2cpio is installed
+  package: 
+    name: rpm2cpio
+    state: latest
+
+- name: extract from rpm archive
+  command: bash -c "rpm2cpio presto-server-rpm-{{presto_version}}.x86_64.rpm | cpio -idmv"
+  args:
+    chdir: /tmp/presto_server_pkg.{{presto_version}}
+    creates: /tmp/presto_server_pkg.{{presto_version}}/usr
+
+- name: ensure presto install directory exists with correct owner and rights 
+  file: path={{presto_install_dir}}
+        state=directory 
+        mode=0755
+        owner={{presto_user}}
+        group={{presto_user}}
+        recurse=yes
+
+- name: move bin folder
+  command: mv /tmp/presto_server_pkg.{{presto_version}}/usr/lib/presto/bin {{presto_install_dir}}/.
+  args:
+    creates: "{{ presto_install_dir }}/bin"
+
+- name: move lib folder
+  command: mv /tmp/presto_server_pkg.{{presto_version}}/usr/lib/presto/lib {{presto_install_dir}}/.
+  args:
+    creates: "{{ presto_install_dir }}/lib"
+
+- name: ensure presto install directory exists with correct owner and rights 
+  file: path={{presto_install_dir}}
+        state=directory 
+        mode=0755
+        owner={{presto_user}}
+        group={{presto_user}}
+        recurse=yes
+

@@ -1,4 +1,7 @@
 node.environment={{ presto_cluster_name }}
 node.id={{ presto_node_id | to_uuid }}
 node.data-dir={{presto_data_dir}}
+{% if presto_distrib == "teradata" %}
+plugin.dir={{presto_install_dir}}/lib/plugin
+{% endif %}
 

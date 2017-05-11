@@ -29,3 +29,7 @@ presto_http_port: 8080
 
 presto_cluster_name: prod
 
+presto_distrib: facebook
+
+presto_coordinator_host: "{{ groups['presto-coordinator'].0 }}"
+

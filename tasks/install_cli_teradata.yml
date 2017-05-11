@@ -1,0 +1,38 @@
+---
+- name: download packaged presto 
+  get_url: url=http://teradata-presto.s3.amazonaws.com/release-packages/{{presto_version}}/presto_server_pkg.{{presto_version}}.tar.gz
+           dest=/tmp/presto-server-{{presto_version}}.tar.gz
+  environment: "{{ presto_environment }}"
+
+- name: extract from archive to tmp
+  unarchive: src=/tmp/presto-server-{{presto_version}}.tar.gz 
+             dest=/tmp
+             copy=no
+             creates=/tmp/presto_server_pkg.{{presto_version}}
+             owner={{presto_user}}
+             group={{presto_user}}
+
+- name: move bin folder
+  command: mv /tmp/presto_server_pkg.{{presto_version}}/presto-cli-{{presto_version}}-executable.jar {{presto_install_dir}}/presto-cli.jar
+  args:
+    creates: "{{ presto_install_dir }}/presto-cli.jar"
+
+- name: ensure presto-cli.jar acls are correct
+  file: path={{presto_install_dir}}/presto-cli.jar
+        state=file
+        mode=0644
+        owner={{presto_user}}
+        group={{presto_user}}
+
+- name: install presto command
+  template: src=presto-cli.sh.j2 
+            dest={{presto_install_dir}}/presto-cli
+            mode=0777
+            owner={{presto_user}}
+            group={{presto_user}}
+  tags: ["configuration"]
+
+- name: configure presto env for users
+  template: src=presto.sh.j2 dest=/etc/profile.d/presto.sh
+  tags: [presto]
+

@@ -14,7 +14,7 @@ false
 http-server.http.port={{presto_http_port}}
 query.max-memory={{presto_query_max_memory}}
 query.max-memory-per-node={{presto_query_max_memory_per_node}}
-discovery.uri=http://{{ groups['presto-coordinator'].0 }}:{{presto_http_port}}
+discovery.uri=http://{{presto_coordinator_host}}:{{presto_http_port}}
 
 
 

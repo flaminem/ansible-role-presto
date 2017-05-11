@@ -4,5 +4,5 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 JAVA_HOME={{ presto_java_home }} PATH=$JAVA_HOME/bin:$PATH \
-$DIR/presto-cli.jar --server {{ groups['presto-coordinator'].0 }}:{{presto_http_port}} --catalog hive --schema default
+$DIR/presto-cli.jar --server {{presto_coordinator_host}}:{{presto_http_port}} --catalog hive --schema default
 
